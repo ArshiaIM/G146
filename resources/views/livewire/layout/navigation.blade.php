@@ -50,6 +50,18 @@ $logout = function (Logout $logout) {
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        {{-- <x-dropdown-link :href="route('employee')" wire:navigate>
+                            {{ __('employee') }}
+                        </x-dropdown-link> --}}
+
+                        {{-- <x-dropdown-link :href="route('Attendance')" wire:navigate>
+                            {{ __('Attendance') }}
+                        </x-dropdown-link> --}}
+
+                        {{-- <x-dropdown-link :href="route('Reports')" wire:navigate>
+                            {{ __('Reports') }}
+                        </x-dropdown-link> --}}
+
                         <!-- Authentication -->
                         <button wire:click="logout" class="w-full text-start">
                             <x-dropdown-link>

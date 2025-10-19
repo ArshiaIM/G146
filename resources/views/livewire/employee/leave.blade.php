@@ -1,0 +1,49 @@
+<div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <h2 class="text-lg font-semibold mb-4 text-gray-800">📝 Request Leave</h2>
+
+    @if (session()->has('success'))
+        <x-alert type="success" :message="session('success')" />
+    @endif
+
+    <form wire:submit.prevent="submit" class="space-y-4">
+        <div>
+            <x-input-label class="block text-sm font-medium text-gray-700 mb-1" :value="__('Prossonel')" />
+            <select wire:model="personnel_id" class="border rounded-lg w-full p-2 bg-gray-800 text-gray-100">
+                <option value="">Select personnel...</option>
+                @foreach($personnels as $p)
+                    <option value="{{ $p->id }}">{{ $p->rank }} {{ $p->first_name }} {{ $p->last_name }}</option>
+                @endforeach
+            </select>
+            {{-- @error('personnel_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+            <x-input-error :messages="$errors->get('personnel_id')" class="mt-2" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <x-input-label class="block text-sm font-medium text-gray-700 mb-1" :value="__('start_date')" />
+                <x-text-input type="date" wire:model="start_date" class="border rounded-lg w-full p-2" />
+                {{-- @error('start_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+            </div>
+            <div>
+                <x-input-label class="block text-sm font-medium text-gray-700 mb-1" :value="__('end_date')" />
+                <x-text-input type="date" wire:model="end_date" class="border rounded-lg w-full p-2" />
+                {{-- @error('end_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+                <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
+            </div>
+        </div>
+
+        <div>
+            <x-input-label class="block text-sm font-medium text-gray-700 mb-1" :value="__('Reason')" />
+            <textarea wire:model="reason" rows="3" class="border rounded-lg w-full p-2 bg-gray-800 text-gray-100"></textarea>
+        </div>
+
+        <button type="submit"
+            class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">
+            Submit Leave
+        </button>
+    </form>
+</div>
+
+</div>

@@ -1,4 +1,4 @@
-@props(['title', 'value', 'color' => 'blue'])
+@props(['title', 'value', 'color' => 'blue','link'=>'employee'])
 
 @php
     $colorClasses = [
@@ -11,6 +11,6 @@
 @endphp
 
 <div class="{{ $colorClasses[$color] ?? $colorClasses['blue'] }} p-4 rounded-2xl shadow-md">
-    <h2 class="text-sm font-semibold uppercase">{{ $title }}</h2>
+    <h2 class="text-sm font-semibold uppercase"><a href="{{ $link }}">{{ $title }}</a></h2>
     <p class="text-3xl font-bold mt-1">{{ $value }}</p>
 </div>

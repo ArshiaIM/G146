@@ -1,9 +1,10 @@
 <?php
 
+use App\Livewire\Dashboard\Index;
+use App\Livewire\Employee\Create;
 use App\Livewire\Employee\LeaveForm;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Employee\Dashboard;
-use App\Models\Employee\Employee;
+
 
 Route::view('/', 'welcome');
 
@@ -16,7 +17,8 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 // Route::get('/home', Dashboard::class)->name('dashboard');
-// Route::get('/employee', Employee::class)->name('employee');
-Route::get('/personnel/leaves', LeaveForm::class)->name('personnel.leaves');
+Route::get('/employee', Index::class)->name('employee');
+Route::get('employee/create',Create::class)->name('employee.store');
+Route::get('/employee/leaves', LeaveForm::class)->name('employee.leaves');
 
 require __DIR__.'/auth.php';

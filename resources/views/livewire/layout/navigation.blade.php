@@ -50,13 +50,13 @@ $logout = function (Logout $logout) {
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        {{-- <x-dropdown-link :href="route('employee')" wire:navigate>
+                        <x-dropdown-link :href="route('employee')" wire:navigate>
                             {{ __('employee') }}
-                        </x-dropdown-link> --}}
+                        </x-dropdown-link>
 
-                        {{-- <x-dropdown-link :href="route('Attendance')" wire:navigate>
-                            {{ __('Attendance') }}
-                        </x-dropdown-link> --}}
+                        <x-dropdown-link :href="route('employee.leaves')" wire:navigate>
+                            {{ __('Leave') }}
+                        </x-dropdown-link>
 
                         {{-- <x-dropdown-link :href="route('Reports')" wire:navigate>
                             {{ __('Reports') }}

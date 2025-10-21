@@ -1,6 +1,8 @@
 <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-    <h2 class="text-lg font-semibold mb-4 text-gray-800">📝 Request Leave</h2>
+     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+  <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 m-6">
+    <h2 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">📝 Request Leave</h2>
 
     @if (session()->has('success'))
         <x-alert type="success" :message="session('success')" />
@@ -9,14 +11,14 @@
     <form wire:submit.prevent="submit" class="space-y-4">
         <div>
             <x-input-label class="block text-sm font-medium text-gray-700 mb-1" :value="__('Prossonel')" />
-            <select wire:model="personnel_id" class="border rounded-lg w-full p-2 bg-gray-800 text-gray-100">
-                <option value="">Select personnel...</option>
-                @foreach($personnels as $p)
+            <select wire:model="employee_id" class="border rounded-lg w-full p-2 bg-gray-800 text-gray-100">
+                <option value="">Select employee...</option>
+                @foreach($employees as $p)
                     <option value="{{ $p->id }}">{{ $p->rank }} {{ $p->first_name }} {{ $p->last_name }}</option>
                 @endforeach
             </select>
-            {{-- @error('personnel_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
-            <x-input-error :messages="$errors->get('personnel_id')" class="mt-2" />
+            {{-- @error('employee_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror --}}
+            <x-input-error :messages="$errors->get('employee_id')" class="mt-2" />
         </div>
 
         <div class="grid grid-cols-2 gap-4">
@@ -44,6 +46,9 @@
             Submit Leave
         </button>
     </form>
+            </div>
+    </div>
+
 </div>
 
 </div>

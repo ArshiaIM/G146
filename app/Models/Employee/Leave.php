@@ -10,7 +10,7 @@ class Leave extends Model
     protected $table = 'leaves';
 
     protected $fillable = [
-        'personnel_id',
+        'employee_id',
         'start_date',
         'end_date',
         'reason',
@@ -25,9 +25,9 @@ class Leave extends Model
     ];
 
     // رابطه به پرسنل اصلی که مرخصی گرفته
-    public function personnel(): BelongsTo
+    public function employee(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Employee\Employee::class, 'personnel_id');
+        return $this->belongsTo(\App\Models\Employee\Employee::class, 'employee_id');
     }
 
     // رابطه به پرسنلی که مرخصی را تأیید کرده (اگر باشد)

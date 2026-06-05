@@ -11,6 +11,45 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
                 </div>
+                <div class="overflow-x-auto text-center">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-gray-900 dark:text-gray-100">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                    درجه
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                    نام
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                    نشان
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                    اعزامی
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                    نوع خدمت
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                    گروهان
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            @foreach ($users as $user)
+                                <tr>
+                                    <td class="px-6 py-4">{{ $user->rank->name }}</td>
+                                    <td class="px-6 py-4">{{ $user->first_name }}</td>
+                                    <td class="px-6 py-4">{{ $user->last_name }}</td>
+                                    <td class="px-6 py-4">{{ $user->created_at_jalali}}</td>
+                                    <td class="px-6 py-4">{{ $user->type->name }}</td>
+                                    <td class="px-6 py-4">{{ $user->unit->name }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

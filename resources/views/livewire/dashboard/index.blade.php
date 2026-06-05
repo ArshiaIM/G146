@@ -17,7 +17,7 @@
             <x-dashboard.card title="Divisions" value="{{ $totalDivisions }}" color="blue" />
             <x-dashboard.card title="Battalions" value="{{ $totalBattalions }}" color="green" />
             <x-dashboard.card title="Units" value="{{ $totalUnits }}" color="purple" />
-            <x-dashboard.card title="Employees" value="{{ $totalEmployees }}" color="yellow" link="{{ route('employee.store') }}"/>
+            <x-dashboard.card title="Employees" value="{{ $totalEmployees }}" color="yellow" link="{{ route('employee.create') }}"/>
             <x-dashboard.card title="Pending Leaves" value="{{ $pendingLeaves }}" color="red" link="{{ route('employee.leaves') }}"/>
         </div>
         </div>

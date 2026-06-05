@@ -17,8 +17,12 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 // Route::get('/home', Dashboard::class)->name('dashboard');
-Route::get('/employee', Index::class)->name('employee');
-Route::get('employee/create',Create::class)->name('employee.store');
-Route::get('/employee/leaves', LeaveForm::class)->name('employee.leaves');
+Route::prefix('employees')->group(function () {
+    Route::get('/', Index::class)->name('employee.index');
+    Route::get('/create', Create::class)->name('employee.create');
+    Route::get('/edit/{employeeId}', Create::class)->name('employees.edit');
+    Route::get('/leaves', LeaveForm::class)->name('employee.leaves');
+});
+
 
 require __DIR__.'/auth.php';

@@ -14,6 +14,7 @@ class Index extends Component
 {
      public $totalDivisions, $totalBattalions, $totalUnits, $totalEmployees, $pendingLeaves;
 
+
     public function mount()
     {
         $this->totalDivisions = Division::count();
@@ -22,6 +23,8 @@ class Index extends Component
         $this->totalEmployees = Employee::count();
         $this->pendingLeaves = Leave::where('status', 'pending')->count();
     }
+
+
 
     #[Layout('layouts.app')]
     public function render()

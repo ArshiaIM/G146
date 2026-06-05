@@ -50,7 +50,7 @@ $logout = function (Logout $logout) {
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('employee')" wire:navigate>
+                        <x-dropdown-link :href="route('employee.index')" wire:navigate>
                             {{ __('employee') }}
                         </x-dropdown-link>
 

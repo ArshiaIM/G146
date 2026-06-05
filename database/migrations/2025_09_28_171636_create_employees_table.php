@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('employee_rank_id')->constrained()->cascadeOnDelete();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('national_id', 20)->unique()->nullable();
+            $table->string('national_id')->nullable()->unique();
             $table->timestamps();
         });
     }

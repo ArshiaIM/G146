@@ -5,16 +5,28 @@ namespace App\Models\Employee;
 use App\Models\System\Unit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Morilog\Jalali\Jalalian;
 
 class Employee extends Model
 {
     protected $fillable = [
-        'first_name', 'last_name', 'age', 'job_title', 'education_level', 'degree',
-        'address', 'phone_primary', 'phone_secondary', 'phone_landline',
-        'division_id', 'battalion_id', 'unit_id', 'organization_id',
+        'first_name',
+        'last_name',
+        'age',
+        'job_title',
+        'education_level',
+        'degree',
+        'address',
+        'phone_primary',
+        'phone_secondary',
+        'phone_landline',
+        'division_id',
+        'battalion_id',
+        'unit_id',
+        'organization_id',
         'employee_type_id',
         'name',
-        'rank', // درجه (افسر، درجه‌دار، وظیفه، معاف از رزم، ...)
+        'rank',
     ];
 
     public function unit()
@@ -27,15 +39,21 @@ class Employee extends Model
         return $this->belongsTo(EmployeeType::class, 'employee_type_id');
     }
 
-     // اگر می‌خواهی، رابطه‌ای برای مرخصی‌هایی که تایید کرده‌اند
+    public function rank()
+    {
+        return $this->belongsTo(EmployeeRank::class, 'employee_rank_id');
+    }
+
+    // اگر می‌خواهی، رابطه‌ای برای مرخصی‌هایی که تایید کرده‌اند
     public function approvedLeaves(): HasMany
     {
         return $this->hasMany(Leave::class, 'approved_by');
     }
-    // public function organization()
-    // {
-    //     return $this->belongsTo(Organization::class);
-    // }
+    public function getCreatedAtJalaliAttribute()
+    {
+        return Jalalian::fromDateTime($this->created_at)
+            ->format('Y/m/d');
+    }
 
     public function getFullNameAttribute(): string
     {

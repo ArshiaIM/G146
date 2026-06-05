@@ -3,13 +3,19 @@
 use App\Livewire\Dashboard\Index;
 use App\Livewire\Employee\Create;
 use App\Livewire\Employee\LeaveForm;
+use App\Models\Employee\Employee;
+// use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+Route::get('/dashboard', function () {
+
+    $users = Employee::all();
+
+    return view('dashboard', compact('users'));
+})->middleware(['auth', 'verified'])
     ->name('dashboard');
 
 Route::view('profile', 'profile')
@@ -25,4 +31,4 @@ Route::prefix('employees')->group(function () {
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
 
             // نوع پرسنل
-            $table->enum('personnel_type', ['kadre', 'vazife']); // کادر / وظیفه
+            $table->enum('personnel_type', ['پایور', 'وظیفه']); // کادر / وظیفه
 
             // رتبه
             $table->enum('rank', [

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Morilog\Jalali\Jalalian;
 
-class Absence extends Model
+class Attendance extends Model
 {
      protected $fillable = [
         'personnel_id', 'type', 'started_at',

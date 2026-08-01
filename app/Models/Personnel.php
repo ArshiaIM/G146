@@ -98,10 +98,10 @@ class Personnel extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function attendances(): HasMany
-    {
-        return $this->hasMany(Attendance::class);
-    }
+    // public function attendances(): HasMany
+    // {
+    //     return $this->hasMany(Attendance::class);
+    // }
 
     public function leaves(): HasMany
     {

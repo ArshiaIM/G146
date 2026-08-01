@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class GuardPost extends Model
+{
+    protected $fillable = ['company_id', 'name', 'is_active', 'sort_order'];
+
+    protected function casts(): array
+    {
+        return ['is_active' => 'boolean'];
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function shifts(): HasMany
+    {
+        return $this->hasMany(GuardShift::class);
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+
+class Guard extends Model
+{
+    protected $fillable = ['company_id', 'guard_date', 'notes'];
+
+    protected function casts(): array
+    {
+        return ['guard_date' => 'date'];
+    }
+
+    public function getGuardDateJalaliAttribute(): string
+    {
+        return \Morilog\Jalali\Jalalian::fromCarbon($this->guard_date)->format('Y/m/d');
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function shifts(): HasMany
+    {
+        return $this->hasMany(GuardShift::class);
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+
+class GuardShift extends Model
+{
+    protected $fillable = [
+        'guard_id',
+        'guard_post_id',
+        'personnel_id',
+        'shift_label',
+        'start_time',
+        'end_time',
+    ];
+
+    public function guard(): BelongsTo
+    {
+        return $this->belongsTo(Guard::class);
+    }
+
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(GuardPost::class, 'guard_post_id');
+    }
+
+    public function personnel(): BelongsTo
+    {
+        return $this->belongsTo(Personnel::class);
+    }
+}

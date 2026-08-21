@@ -19,13 +19,34 @@ return new class extends Migration
             $table->enum('personnel_type', ['پایور', 'وظیفه']); // کادر / وظیفه
 
             // رتبه
-            $table->enum('rank', [
+            $table->enum('rank_type', [
                 'officer_a',      // افسر الف  (کادر)
                 'officer_b',      // افسر ب    (کادر)
                 'nco',            // درجه‌دار   (کادر)
                 'vazife_officer', // افسر وظیفه
                 'vazife_nco',     // درجه‌دار وظیفه
                 'soldier',        // سرباز
+            ]);
+            $table->enum('rank', [
+                'private',                    // سرباز
+                'corporal',                   // سرجوخه
+                'sergeant',                   // گروهبان سوم
+                'staff_sergeant',             // گروهبان دوم
+                'sergeant_first_class',       // گروهبان یکم
+                'sergeant_major',              // استوار دوم
+                'command_sergeant_major',     // استوار یکم
+                'third_lieutenant',             // ستوان سوم
+                'second_lieutenant',            // ستوان دوم
+                'first_lieutenant',             // ستوان یکم
+                'captain',                     // سروان
+                'major',                       // سرگرد
+                'lieutenant_colonel',           // سرهنگ دوم
+                'colonel',                     // سرهنگ
+                'second_brigadier_general',     // سرتیپ دوم
+                'brigadier_general',            // سرتیپ
+                'major_general',                // سرلشکر
+                'lieutenant_general',           // سپهبد
+                'general',                     // ارتشبد
             ]);
 
             $table->string('first_name');

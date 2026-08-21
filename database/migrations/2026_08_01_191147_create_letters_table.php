@@ -13,7 +13,7 @@ return new class extends Migration
     {
        Schema::create('letters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('personnel_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('personnel_id')->constrained('personnel')->cascadeOnDelete();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
 
             $table->string('subject');                     // موضوع نامه

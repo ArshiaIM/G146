@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('personnel_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('personnel_id')->constrained('personnel')->cascadeOnDelete();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->date('date');
             $table->enum('status', [
-                'present',  // حاضر
-                'leave',    // مرخصی
-                'medical',  // بهداری
-                'absent',   // غیبت
-                'escaped',  // فرار
-                'mission',  // مأموریت
+                'present',   // حاضر
+                'mission',   // مأمور
+                'leave',     // مرخصی
+                'medical',   // بهداری
+                'absent',    // غیبت
+                'arrested',  // بازداشت
+                'course',    // دوره
             ])->default('present');
             $table->text('notes')->nullable();
             $table->timestamps();

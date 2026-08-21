@@ -13,7 +13,7 @@ return new class extends Migration
     {
          Schema::create('leaves', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('personnel_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('personnel_id')->constrained('personnel')->cascadeOnDelete();
 
             $table->enum('type', [
                 'hourly',   // ساعتی

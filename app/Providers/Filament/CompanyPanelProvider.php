@@ -6,6 +6,7 @@ use App\Filament\Company\Resources\Leaves\LeaveResource;
 use App\Filament\Company\Resources\Personnels\PersonnelResource;
 use App\Filament\Company\Resources\Letters\LetterResource;
 use App\Filament\Company\Resources\Medicals\MedicalResource;
+use App\Filament\Company\Auth\CompanyLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -22,6 +23,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+
 
 class CompanyPanelProvider extends PanelProvider
 {
@@ -63,7 +65,7 @@ class CompanyPanelProvider extends PanelProvider
                 MedicalResource::class,
                 // AbsenceResource::class,
                 LetterResource::class,
-            ])
+            ])->login(CompanyLogin::class)
         ;
     }
 }

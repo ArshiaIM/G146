@@ -9,18 +9,9 @@ class CreateAttendance extends CreateRecord
 {
     protected static string $resource = AttendanceResource::class;
 
-    protected function mutateFormDataBeforeCreate(array $data): array
+    public function mount(): void
     {
-        // وقتی غیبت ثبت میشه، وضعیت پرسنل رو آپدیت کن
-        if (isset($data['personnel_id'])) {
-            \App\Models\Personnel::find($data['personnel_id'])
-                ?->update(['status' => $data['type']]);
-        }
-        return $data;
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
+        // redirect به لیست چون فرم ثبت توی ListAttendances هست
+        $this->redirect($this->getResource()::getUrl('index'));
     }
 }

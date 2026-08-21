@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('medical_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('personnel_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('personnel_id')->constrained('personnel')->cascadeOnDelete();
 
             $table->dateTime('sent_at');                    // تاریخ اعزام به بهداری
             $table->dateTime('returned_at')->nullable();    // تاریخ مراجعت از بهداری

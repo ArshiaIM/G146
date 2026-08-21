@@ -15,11 +15,20 @@ class Personnel extends Model
     protected $table = 'personnel';
 
     protected $fillable = [
-        'company_id', 'personnel_type', 'rank',
-        'first_name', 'last_name', 'national_code',
-        'personnel_number', 'phone', 'city',
-        'service_start_date', 'service_end_date',
-        'status', 'notes',
+        'company_id',
+        'personnel_type',
+        'rank_type',
+        'rank',
+        'first_name',
+        'last_name',
+        'national_code',
+        'personnel_number',
+        'phone',
+        'city',
+        'service_start_date',
+        'service_end_date',
+        'status',
+        'notes',
     ];
 
     protected function casts(): array
@@ -34,19 +43,46 @@ class Personnel extends Model
 
     public function getFullNameAttribute(): string
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->rank. ' ' .$this->first_name . ' ' . $this->last_name;
     }
 
-    public function getRankLabelAttribute(): string
+    public function getRankTypeLabelAttribute(): string
     {
-        return match ($this->rank) {
+        return match ($this->rank_type) {
             'officer_a'      => 'افسر الف',
             'officer_b'      => 'افسر ب',
             'nco'            => 'درجه‌دار کادر',
             'vazife_officer' => 'افسر وظیفه',
             'vazife_nco'     => 'درجه‌دار وظیفه',
             'soldier'        => 'سرباز',
-            default          => $this->rank,
+            default          => $this->rank_type,
+        };
+    }
+
+    public function getRankLableAttribute(): string
+    {
+        return match ($this->rank) {
+
+            'private'                 => 'سرباز',
+            'corporal'                => 'سرجوخه',
+            'sergeant'                => 'گروهبان سوم',
+            'staff_sergeant'          => 'گروهبان دوم',
+            'sergeant_first_class'    => 'گروهبان یکم',
+            'sergeant_major'          => 'استوار دوم',
+            'command_sergeant_major'  => 'استوار یکم',
+            'third_lieutenant'        => 'ستوان سوم',
+            'second_lieutenant'       => 'ستوان دوم',
+            'first_lieutenant'        => 'ستوان یکم',
+            'captain'                 => 'سروان',
+            'major'                   => 'سرگرد',
+            'lieutenant_colonel'      => 'سرهنگ دوم',
+            'colonel'                 => 'سرهنگ',
+            'second_brigadier_general' => 'سرتیپ دوم',
+            'brigadier_general'       => 'سرتیپ',
+            'major_general'           => 'سرلشکر',
+            'lieutenant_general'      => 'سپهبد',
+            'general'                 => 'ارتشبد',
+            default                   => $this->rank,
         };
     }
 
@@ -143,5 +179,48 @@ class Personnel extends Model
     public function scopeInCompany($query, int $companyId)
     {
         return $query->where('company_id', $companyId);
+    }
+
+    public static function ranksByType(string $type): array
+    {
+        return match ($type) {
+
+            'soldier' => [
+                'private',
+            ],
+
+            'nco', 'vazife_nco' => [
+                'corporal',
+                'sergeant',
+                'staff_sergeant',
+                'sergeant_first_class',
+                'sergeant_major',
+                'command_sergeant_major',
+            ],
+
+            'officer_a', 'officer_b' => [
+                'third_lieutenant',
+                'second_lieutenant',
+                'first_lieutenant',
+                'captain',
+                'major',
+                'lieutenant_colonel',
+                'colonel',
+                'second_brigadier_general',
+                'brigadier_general',
+                'major_general',
+                'lieutenant_general',
+                'general',
+            ],
+
+            'vazife_officer' => [
+                'third_lieutenant',
+                'second_lieutenant',
+                'first_lieutenant',
+                'captain',
+            ],
+
+            default => [],
+        };
     }
 }

@@ -16,7 +16,21 @@ class PersonnelsTable
     {
         return $table
             ->columns([
-                //
+                \Filament\Tables\Columns\TextColumn::make('full_name')
+                    ->label('نام و نام خانوادگی')
+                    ->searchable(['first_name', 'last_name']),
+
+                \Filament\Tables\Columns\TextColumn::make('rank_label')
+                    ->label('رتبه'),
+
+                \Filament\Tables\Columns\TextColumn::make('personnel_type_label')
+                    ->label('نوع'),
+
+                \Filament\Tables\Columns\TextColumn::make('status_label')
+                    ->label('وضعیت'),
+
+                \Filament\Tables\Columns\TextColumn::make('national_code')
+                    ->label('کد ملی'),
             ])
             ->filters([
                 TrashedFilter::make(),

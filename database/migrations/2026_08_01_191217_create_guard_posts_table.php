@@ -37,7 +37,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('guard_id')->constrained()->cascadeOnDelete();
             $table->foreignId('guard_post_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('personnel_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('personnel_id')->constrained('personnel')->cascadeOnDelete();
             $table->string('shift_label');    // مثلاً: پاس اول، پاس دوم، پاس سوم
             $table->time('start_time');
             $table->time('end_time');

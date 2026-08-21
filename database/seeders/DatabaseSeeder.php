@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         $battalions = [
             ['name' => 'گردان 146', 'code' => '146', 'companies' => [
-                ['name' => 'ارکان',     'username' => '46ark',],
+                ['name' => 'ارکان',     'username' => '46ark', 'password'=>'1234'],
                 ['name' => 'گروهان 1',  'username' => '46co1',],
                 ['name' => 'گروهان 2',  'username' => '46co2',],
                 ['name' => 'گروهان 3',  'username' => '46co3',],

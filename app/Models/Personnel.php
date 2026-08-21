@@ -43,7 +43,7 @@ class Personnel extends Model
 
     public function getFullNameAttribute(): string
     {
-        return $this->rank. ' ' .$this->first_name . ' ' . $this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function getRankTypeLabelAttribute(): string
@@ -88,7 +88,7 @@ class Personnel extends Model
 
     public function getPersonnelTypeLabelAttribute(): string
     {
-        return $this->personnel_type === 'kadre' ? 'کادر' : 'وظیفه';
+        return $this->personnel_type === 'Career' ? 'پایور' : 'وظیفه';
     }
 
     public function getStatusLabelAttribute(): string

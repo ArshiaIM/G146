@@ -98,7 +98,7 @@
             <ul class="divide-y dark:divide-gray-700">
                 @foreach($absentList[$status] as $person)
                 <li class="px-3 py-1.5">
-                    <span class="text-xs text-gray-400">{{ $person['rank'] }}</span>
+                    <span class="text-xs text-gray-400">{{ $person['rank_type'] }}</span>
                     <span class="font-medium mr-1">{{ $person['name'] }}</span>
                     @if($person['notes'])
                     <div class="text-xs text-gray-400">{{ $person['notes'] }}</div>
@@ -146,7 +146,7 @@
                     @php $currentStatus = $statuses[$p->id]['status'] ?? 'present'; @endphp
                     <tr class="{{ $currentStatus !== 'present' ? 'bg-yellow-50 dark:bg-yellow-900/10' : '' }}">
                         <td class="px-4 py-2 font-medium">{{ $p->full_name }}</td>
-                        <td class="px-4 py-2 text-xs text-gray-500">{{ $p->rank_label }}</td>
+                        <td class="px-4 py-2 text-xs text-gray-500">{{ $p->rank_type_label }}</td>
                         <td class="px-4 py-2 text-xs text-gray-400">{{ $p->personnel_number ?? '—' }}</td>
                         <td class="px-4 py-2 text-center">
                             <select

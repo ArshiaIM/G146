@@ -53,7 +53,7 @@ class PersonnelForm
                     ])
                     ->columns(3),
 
-                Select::make('personnel_type')
+                Select::make('rank_type')
                     ->label('رتبه')
                     ->options([
                         'officer_a'      => 'افسر الف',
@@ -62,6 +62,13 @@ class PersonnelForm
                         'vazife_officer' => 'افسر وظیفه',
                         'vazife_nco'     => 'درجه‌دار وظیفه',
                         'soldier'        => 'سرباز',
+                    ])
+                    ->required(),
+                Select::make('personnel_type')
+                    ->label('نوع')
+                    ->options([
+                        'Career'      => 'پایور',
+                        'Conscription'      => 'وظیفه',
                     ])
                     ->required(),
 

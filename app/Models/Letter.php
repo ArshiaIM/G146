@@ -9,8 +9,15 @@ use Morilog\Jalali\Jalalian;
 class Letter extends Model
 {
     protected $fillable = [
-        'personnel_id', 'company_id', 'subject', 'content',
-        'letter_number', 'letter_date', 'type', 'category', 'attachment',
+        'personnel_id',
+        'company_id',
+        'subject',
+        'content',
+        'letter_number',
+        'letter_date',
+        'type',
+        'category',
+        'attachment',
     ];
 
     protected function casts(): array
@@ -48,6 +55,7 @@ class Letter extends Model
         return $this->belongsTo(Personnel::class);
     }
 
+    // توی Letter.php model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

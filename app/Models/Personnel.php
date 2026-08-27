@@ -59,7 +59,7 @@ class Personnel extends Model
         };
     }
 
-    public function getRankLableAttribute(): string
+    public function getRankLabelAttribute(): string
     {
         return match ($this->rank) {
 

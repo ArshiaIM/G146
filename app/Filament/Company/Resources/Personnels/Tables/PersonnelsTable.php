@@ -20,8 +20,12 @@ class PersonnelsTable
                     ->label('نام و نام خانوادگی')
                     ->searchable(['first_name', 'last_name']),
 
-                \Filament\Tables\Columns\TextColumn::make('rank_lable')
+                \Filament\Tables\Columns\TextColumn::make('rank_label')
                     ->label('درجه'),
+
+                \Filament\Tables\Columns\TextColumn::make('ranktype_label')
+                    ->label('رتبه'),
+
 
                 \Filament\Tables\Columns\TextColumn::make('personnel_type_label')
                     ->label('نوع'),

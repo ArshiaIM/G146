@@ -5,19 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-class Guard extends Model
+class GuardPost extends Model
 {
-    protected $fillable = ['company_id', 'guard_date', 'notes'];
+    protected $fillable = ['company_id', 'name', 'is_active', 'sort_order'];
 
     protected function casts(): array
     {
-        return ['guard_date' => 'date'];
-    }
-
-    public function getGuardDateJalaliAttribute(): string
-    {
-        return \Morilog\Jalali\Jalalian::fromCarbon($this->guard_date)->format('Y/m/d');
+        return ['is_active' => 'boolean'];
     }
 
     public function company(): BelongsTo

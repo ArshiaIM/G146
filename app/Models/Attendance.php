@@ -8,39 +8,49 @@ use Morilog\Jalali\Jalalian;
 
 class Attendance extends Model
 {
-     protected $fillable = [
-        'personnel_id', 'type', 'started_at',
-        'returned_at', 'description', 'is_resolved', 'actions_taken',
+    protected $fillable = [
+        'personnel_id',
+        'company_id',
+        'date',
+        'status',
+        'notes',
     ];
 
     protected function casts(): array
     {
         return [
-            'started_at'  => 'datetime',
-            'returned_at' => 'datetime',
-            'is_resolved' => 'boolean',
+            'date' => 'date',
         ];
     }
 
-    public function getTypeLabelAttribute(): string
+    public function getStatusLabelAttribute(): string
     {
-        return $this->type === 'escaped' ? 'فرار' : 'غیبت';
+        return match ($this->status) {
+            'present'  => 'حاضر',
+            'mission'  => 'مأمور',
+            'leave'    => 'مرخصی',
+            'medical'  => 'بهداری',
+            'absent'   => 'غیبت',
+            'arrested' => 'بازداشت',
+            'course'   => 'دوره',
+            default    => $this->status,
+        };
     }
 
-    public function getStartedJalaliAttribute(): string
+    public function getDateJalaliAttribute(): string
     {
-        return Jalalian::fromCarbon($this->started_at)->format('Y/m/d');
-    }
-
-    // مدت غیبت به روز
-    public function getDurationDaysAttribute(): int
-    {
-        $end = $this->returned_at ?? now();
-        return (int) $this->started_at->diffInDays($end);
+        return $this->date
+            ? Jalalian::fromCarbon($this->date)->format('Y/m/d')
+            : '';
     }
 
     public function personnel(): BelongsTo
     {
         return $this->belongsTo(Personnel::class);
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }

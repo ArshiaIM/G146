@@ -7,6 +7,7 @@ use App\Filament\Company\Resources\Attendances\Pages\EditAttendance;
 use App\Filament\Company\Resources\Attendances\Pages\ListAttendances;
 use App\Filament\Company\Resources\Attendances\Schemas\AttendanceForm;
 use App\Filament\Company\Resources\Attendances\Tables\AttendancesTable;
+use App\Filament\Company\Widgets\AttendanceStatsWidget;
 use App\Models\Attendance;
 use App\Models\Personnel;
 use BackedEnum;
@@ -50,6 +51,12 @@ class AttendanceResource extends Resource
             'index' => ListAttendances::route('/'),
             'create' => CreateAttendance::route('/create'),
             'edit' => EditAttendance::route('/{record}/edit'),
+        ];
+    }
+    public static function getWidgets(): array
+    {
+        return [
+            \App\Filament\Company\Widgets\AttendanceStatsWidget::class,
         ];
     }
 }

@@ -25,6 +25,9 @@ class ListAttendances extends ListRecords implements HasTable
     use InteractsWithTable;
 
     protected static string $resource = AttendanceResource::class;
+    public static array $sharedStats = [];
+    public static array $sharedAbsentList = [];
+
 
     #[Url]
     public string $selectedDate = '';
@@ -58,6 +61,12 @@ class ListAttendances extends ListRecords implements HasTable
                     'notes'  => $att?->notes ?? '',
                 ];
             });
+
+
+
+        // dispatch به widget
+        self::$sharedStats = $this->getStats();
+        self::$sharedAbsentList = $this->getAbsentList();
     }
 
     public function changeDate(string $date): void
@@ -101,6 +110,15 @@ class ListAttendances extends ListRecords implements HasTable
         }
 
         Notification::make()->title('✅ حضور و غیاب ثبت شد')->success()->send();
+
+        self::$sharedStats = $this->getStats();
+        self::$sharedAbsentList = $this->getAbsentList();
+
+        $this->dispatch(
+            'attendance-updated',
+            stats: self::$sharedStats,
+            absentList: self::$sharedAbsentList
+        );
     }
 
     public function getStats(): array
@@ -451,13 +469,14 @@ class ListAttendances extends ListRecords implements HasTable
                     $statuses = [
                         'organizational' => 'سازمانی',
                         'actual'         => 'موجودی',
-                        'present'        => 'حاضر',
                         'mission'        => 'مأمور',
                         'leave'          => 'مرخصی',
                         'medical'        => 'بهداری',
                         'absent'         => 'غیبت',
                         'arrested'       => 'بازداشت',
                         'course'         => 'دوره',
+                        'misc'           => 'متفرقه',
+                        'present'        => 'حاضر',
                     ];
 
                     $statusStyles = [
@@ -509,9 +528,10 @@ class ListAttendances extends ListRecords implements HasTable
 
                             $cellStyle = 'padding:8px;border:1px solid #e5e7eb;';
 
-                            // رنگ‌گذاری خاص برای ستون حاضر و سازمانی
                             if ($statusKey === 'present' && !$isTotal) {
-                                $cellStyle .= 'color:#15803d;font-weight:bold;';
+                                $cellStyle .= 'background:#dcfce7;color:#15803d;font-weight:bold;';
+                            } elseif ($statusKey === 'misc' && !$isTotal) {
+                                $cellStyle .= 'background:#fef9c3;color:#854d0e;font-weight:bold;';
                             } elseif (in_array($statusKey, ['absent', 'arrested']) && $val > 0) {
                                 $cellStyle .= 'color:#dc2626;font-weight:bold;';
                             }
@@ -531,7 +551,7 @@ class ListAttendances extends ListRecords implements HasTable
                         if (count($people) === 0) continue;
 
                         $html .= "<div style='border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;'>";
-                        $html .= "<div style='background:#f3f4f6;padding:6px 12px;font-weight:bold;font-size:12px;display:flex;justify-content:space-between;'>";
+                        $html .= "<div style='color:#000;background:#f3f4f6;padding:6px 12px;font-weight:bold;font-size:12px;display:flex;justify-content:space-between;'>";
                         $html .= "<span>$label</span><span style='background:white;border-radius:999px;padding:0 8px;'>" . count($people) . "</span></div>";
                         $html .= "<ul style='margin:0;padding:0;list-style:none;'>";
                         foreach ($people as $person) {
@@ -556,7 +576,9 @@ class ListAttendances extends ListRecords implements HasTable
 
     protected function getHeaderWidgets(): array
     {
-        return [];
+        return [
+            // \App\Filament\Company\Widgets\AttendanceStatsWidget::class,
+        ];
     }
 
     // جدول آماری رو بالای Table نشون بده

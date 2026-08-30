@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\RequiresApproval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Morilog\Jalali\Jalalian;
 
 class MedicalRecord extends Model
 {
+    use RequiresApproval;
     protected $fillable = [
         'personnel_id', 'sent_at', 'returned_at',
         'diagnosis', 'type', 'rest_days', 'doctor',

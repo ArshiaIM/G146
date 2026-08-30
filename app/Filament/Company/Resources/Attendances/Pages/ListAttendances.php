@@ -17,6 +17,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Url;
 
@@ -36,6 +37,20 @@ class ListAttendances extends ListRecords implements HasTable
     public string $rankFilter = '';
 
     public array $statuses = [];
+    private function getPersonnelQuery()
+    {
+        $user = auth()->user();
+
+        if ($user->role === 'battalion_admin') {
+            return Personnel::whereHas(
+                'company',
+                fn($q) =>
+                $q->where('battalion_id', $user->battalion_id)
+            );
+        }
+
+        return Personnel::where('company_id', $user->company_id);
+    }
 
     public function mount(): void
     {
@@ -45,14 +60,18 @@ class ListAttendances extends ListRecords implements HasTable
 
     public function loadStatuses(): void
     {
-        $companyId = auth()->user()->company_id;
+        $user = auth()->user();
 
-        $attendances = Attendance::where('company_id', $companyId)
+        $companyIds = $user->role === 'battalion_admin'
+            ? \App\Models\Company::where('battalion_id', $user->battalion_id)->pluck('id')
+            : [$user->company_id];
+
+        $attendances = Attendance::whereIn('company_id', $companyIds)
             ->whereDate('date', $this->selectedDate)
             ->get()
             ->keyBy('personnel_id');
 
-        Personnel::where('company_id', $companyId)
+        $this->getPersonnelQuery()
             ->get()
             ->each(function ($p) use ($attendances) {
                 $att = $attendances->get($p->id);
@@ -62,10 +81,7 @@ class ListAttendances extends ListRecords implements HasTable
                 ];
             });
 
-
-
-        // dispatch به widget
-        self::$sharedStats = $this->getStats();
+        self::$sharedStats      = $this->getStats();
         self::$sharedAbsentList = $this->getAbsentList();
     }
 
@@ -85,16 +101,17 @@ class ListAttendances extends ListRecords implements HasTable
 
     public function saveAttendance(): void
     {
-        $companyId = auth()->user()->company_id;
-
         foreach ($this->statuses as $personnelId => $data) {
+            $personnel = Personnel::find($personnelId);
+            if (!$personnel) continue;
+
             Attendance::updateOrCreate(
                 ['personnel_id' => $personnelId, 'date' => $this->selectedDate],
-                ['company_id' => $companyId, 'status' => $data['status'], 'notes' => $data['notes'] ?? '']
+                ['company_id' => $personnel->company_id, 'status' => $data['status'], 'notes' => $data['notes'] ?? '']
             );
 
             if ($this->selectedDate === today()->toDateString()) {
-                Personnel::find($personnelId)?->update([
+                $personnel->update([
                     'status' => match ($data['status']) {
                         'present'  => 'active',
                         'mission'  => 'mission',
@@ -111,7 +128,7 @@ class ListAttendances extends ListRecords implements HasTable
 
         Notification::make()->title('✅ حضور و غیاب ثبت شد')->success()->send();
 
-        self::$sharedStats = $this->getStats();
+        self::$sharedStats      = $this->getStats();
         self::$sharedAbsentList = $this->getAbsentList();
 
         $this->dispatch(
@@ -125,7 +142,7 @@ class ListAttendances extends ListRecords implements HasTable
     {
         $companyId = auth()->user()->company_id;
         $strength  = OrganizationalStrength::where('company_id', $companyId)->first();
-        $personnel = Personnel::where('company_id', $companyId)->get();
+        $personnel = $this->getPersonnelQuery()->get();
         $ranks     = ['officer_a', 'officer_b', 'vazife_officer', 'nco', 'vazife_nco', 'soldier'];
 
         $stats = [];
@@ -172,7 +189,7 @@ class ListAttendances extends ListRecords implements HasTable
     public function getAbsentList(): array
     {
         $companyId = auth()->user()->company_id;
-        $personnel = Personnel::where('company_id', $companyId)->get()->keyBy('id');
+        $personnel = $this->getPersonnelQuery()->get()->keyBy('id');
         $list      = array_fill_keys(['mission', 'leave', 'medical', 'absent', 'arrested', 'course'], []);
 
         foreach ($this->statuses as $personnelId => $data) {
@@ -197,10 +214,10 @@ class ListAttendances extends ListRecords implements HasTable
     {
         return $table
             ->query(
-                Personnel::query()
-                    ->where('company_id', auth()->user()->company_id)
-                    ->orderBy('rank_type')
-                    ->when($this->rankFilter, fn($q) => $q->where('rank_type', $this->rankFilter))
+                fn() =>
+                $this->getPersonnelQuery()
+                    ->orderByDesc('rank')
+                    ->when($this->rankFilter, fn($q) => $q->where('rank', $this->rankFilter))
             )
             ->columns([
                 TextColumn::make('full_name')
@@ -269,6 +286,25 @@ class ListAttendances extends ListRecords implements HasTable
                         'vazife_nco'     => 'درجه‌دار وظیفه',
                         'soldier'        => 'سرباز',
                     ]),
+
+                SelectFilter::make('personnel_type')
+                    ->label('نوع پرسنل')
+                    ->options([
+                        'Career'       => 'کادر',
+                        'Conscription' => 'وظیفه',
+                    ]),
+
+                SelectFilter::make('status')
+                    ->label('وضعیت')
+                    ->options([
+                        'active'  => 'فعال',
+                        'leave'   => 'مرخصی',
+                        'medical' => 'بهداری',
+                        'absent'  => 'غیبت',
+                        'mission' => 'مأمور',
+                    ]),
+
+                TrashedFilter::make(),
             ])
             ->recordActions([
                 // دکمه تغییر وضعیت روی هر ردیف

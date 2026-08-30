@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('battalion_id')->constrained()->cascadeOnDelete();
             $table->string('name');                      // گروهان ۱، گروهان ۲، ...
-            $table->string('commander')->nullable();     // نام فرمانده گروهان
+            $table->foreignId('commander_id');     // نام فرمانده گروهان
             $table->string('code')->unique()->nullable(); // کد گروهان برای لاگین
             $table->timestamps();
         });

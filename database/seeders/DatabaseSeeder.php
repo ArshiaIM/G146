@@ -182,5 +182,5 @@ class DatabaseSeeder extends Seeder
     //     }
 
     //     $this->command->info('✅ ' . count($personnel) . ' نفر پرسنل ثبت شد');
-    // }
+    }
 }

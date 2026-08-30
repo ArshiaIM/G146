@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\RequiresApproval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Morilog\Jalali\Jalalian;
 
 class Leave extends Model
 {
+    use RequiresApproval;
     protected $fillable = [
         'personnel_id', 'type', 'start_datetime', 'end_datetime',
         'returned_at', 'reason', 'destination', 'status',

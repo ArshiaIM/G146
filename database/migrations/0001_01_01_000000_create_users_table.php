@@ -33,6 +33,19 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
+            $table->foreignId('company_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            $table->foreignId('battalion_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            $table->foreignId('personnel_id')
+                ->nullable()
+                ->after('company_id')
+                ->constrained('personnel')
+                ->nullOnDelete();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

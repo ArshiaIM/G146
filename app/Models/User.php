@@ -2,39 +2,70 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $fillable = [
+        'name',
+        'email',
+        'username',
+        'password',
+        'role',
+        'company_id',
+        'battalion_id',
+        'personnel_id',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
-    // Sanctum/Laravel برای لاگین از این استفاده میکنه
     public function getAuthIdentifierName(): string
     {
         return 'username';
     }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'admin') {
+            return $this->role === 'super_admin';
+        }
+
+        if ($panel->getId() === 'company') {
+            return in_array($this->role, ['company_admin', 'operator', 'battalion_admin'])
+                && !is_null($this->company_id);
+        }
+
+        return false;
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function battalion(): BelongsTo
+    {
+        return $this->belongsTo(Battalion::class);
+    }
+    public function personnel(): BelongsTo
+    {
+        return $this->belongsTo(Personnel::class);
+    }
 }

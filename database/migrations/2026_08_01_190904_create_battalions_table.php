@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('battalions', function (Blueprint $table) {
             $table->id();
             $table->string('name');                    // گردان ۱، گردان ۲، ...
-            $table->string('commander')->nullable();   // نام فرمانده
+            // $table->string('commander')->nullable();   // نام فرمانده
+            $table->foreignId('commander_id')
+                ->nullable()
+                ->constrained('personnel')
+                ->nullOnDelete();
             $table->string('code')->unique()->nullable(); // کد گردان
             $table->timestamps();
         });
